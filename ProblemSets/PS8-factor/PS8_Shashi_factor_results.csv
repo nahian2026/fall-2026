@@ -1,0 +1,47 @@
+equation,variable,coefficient,std_error
+asvabAR,black,-0.9343,0.045
+asvabAR,hispanic,-0.672,0.0486
+asvabAR,female,-0.0245,0.0371
+asvabAR,constant,0.3692,0.0303
+asvabCS,black,-0.4309,0.0477
+asvabCS,hispanic,-0.4382,0.0509
+asvabCS,female,0.3939,0.039
+asvabCS,constant,0.0018,0.0316
+asvabMK,black,-0.8083,0.0459
+asvabMK,hispanic,-0.6298,0.0496
+asvabMK,female,0.1869,0.0379
+asvabMK,constant,0.2307,0.031
+asvabNO,black,-0.3418,0.0483
+asvabNO,hispanic,-0.4622,0.0517
+asvabNO,female,0.2467,0.0396
+asvabNO,constant,0.057,0.0322
+asvabPC,black,-0.7594,0.046
+asvabPC,hispanic,-0.5897,0.0495
+asvabPC,female,0.2914,0.0378
+asvabPC,constant,0.1611,0.0309
+asvabWK,black,-0.9353,0.0448
+asvabWK,hispanic,-0.7445,0.0481
+asvabWK,female,0.043,0.0368
+asvabWK,constant,0.3491,0.03
+logwage,black,-0.187,0.0244
+logwage,hispanic,-0.0797,0.026
+logwage,female,-0.1361,0.02
+logwage,schoolt,-0.0025,0.0049
+logwage,gradHS,0.1066,0.0495
+logwage,grad4yr,0.2389,0.028
+logwage,constant,2.1552,0.0506
+asvabAR,factor loading (gamma),0.7699,0.0152
+asvabCS,factor loading (gamma),0.5502,0.0185
+asvabMK,factor loading (gamma),0.8154,0.0152
+asvabNO,factor loading (gamma),0.6425,0.0181
+asvabPC,factor loading (gamma),0.7396,0.0162
+asvabWK,factor loading (gamma),0.6617,0.0163
+logwage,factor loading (delta),0.1049,0.0116
+asvabAR,sigma,0.4804,0.0092
+asvabCS,sigma,0.7835,0.0118
+asvabMK,sigma,0.437,0.0099
+asvabNO,sigma,0.7289,0.0114
+asvabPC,sigma,0.5575,0.01
+asvabWK,sigma,0.6119,0.0102
+logwage,sigma,0.4679,0.0067
+(model),log-likelihood,-17524.718,NaN

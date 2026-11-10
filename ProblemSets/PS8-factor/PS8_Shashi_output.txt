@@ -1,0 +1,204 @@
+================================================================================
+Problem Set 8: Factor Models and Dimension Reduction  --  Shashi
+================================================================================
+
+Loading data...
+Data loaded successfully. Dimensions: (2438, 15)
+
+================================================================================
+Question 1: Base Regression (without ASVAB)
+================================================================================
+───────────────────────────────────────────────────────────────────────────────
+                   Coef.  Std. Error      t  Pr(>|t|)    Lower 95%    Upper 95%
+───────────────────────────────────────────────────────────────────────────────
+(Intercept)   2.00771     0.0486417   41.28    <1e-99   1.91233      2.1031
+black        -0.167441    0.0242698   -6.90    <1e-11  -0.215033    -0.119849
+hispanic     -0.054249    0.0257864   -2.10    0.0355  -0.104815    -0.00368347
+female       -0.155049    0.0197897   -7.83    <1e-14  -0.193856    -0.116243
+schoolt       0.00525102  0.00494639   1.06    0.2885  -0.00444857   0.0149506
+gradHS        0.195649    0.0494231    3.96    <1e-04   0.0987327    0.292564
+grad4yr       0.299131    0.0276911   10.80    <1e-25   0.244831     0.353432
+───────────────────────────────────────────────────────────────────────────────
+R² = 0.1465
+
+================================================================================
+Question 2: ASVAB Correlations
+================================================================================
+6×7 DataFrame
+ Row │ test     asvabAR   asvabCS   asvabMK   asvabNO   asvabPC   asvabWK
+     │ String   Float64   Float64   Float64   Float64   Float64   Float64
+─────┼─────────────────────────────────────────────────────────────────────
+   1 │ asvabAR  1.0       0.477307  0.799272  0.544505  0.709035  0.677215
+   2 │ asvabCS  0.477307  1.0       0.546088  0.554608  0.500526  0.421961
+   3 │ asvabMK  0.799272  0.546088  1.0       0.638262  0.716732  0.672381
+   4 │ asvabNO  0.544505  0.554608  0.638262  1.0       0.516773  0.461933
+   5 │ asvabPC  0.709035  0.500526  0.716732  0.516773  1.0       0.745446
+   6 │ asvabWK  0.677215  0.421961  0.672381  0.461933  0.745446  1.0
+Answer Q2: The ASVAB scores are strongly positively correlated (roughly 0.4 to 0.8).
+The highest pairs are AR–MK (~0.80), PC–WK (~0.75), MK–PC and AR–PC (~0.71-0.72).
+All six tests seem to be picking up a common underlying ability.
+
+================================================================================
+Question 3: Full Regression (with all ASVAB)
+================================================================================
+──────────────────────────────────────────────────────────────────────────────
+                   Coef.  Std. Error      t  Pr(>|t|)   Lower 95%    Upper 95%
+──────────────────────────────────────────────────────────────────────────────
+(Intercept)   2.11439     0.0499833   42.30    <1e-99   2.01637     2.2124
+black        -0.0882104   0.0262027   -3.37    0.0008  -0.139592   -0.0368283
+hispanic     -0.00265999  0.0262759   -0.10    0.9194  -0.0541854   0.0488655
+female       -0.150082    0.020261    -7.41    <1e-12  -0.189813   -0.110352
+schoolt      -0.00210587  0.00493784  -0.43    0.6698  -0.0117887   0.00757696
+gradHS        0.115022    0.0496345    2.32    0.0206   0.0176915   0.212352
+grad4yr       0.235114    0.0280233    8.39    <1e-16   0.180162    0.290066
+asvabAR       0.0448741   0.0176102    2.55    0.0109   0.0103414   0.0794067
+asvabCS       0.0119797   0.0122802    0.98    0.3294  -0.0121011   0.0360606
+asvabMK       0.0800608   0.0187324    4.27    <1e-04   0.0433276   0.116794
+asvabNO       0.00648723  0.0131941    0.49    0.6230  -0.0193856   0.0323601
+asvabPC      -0.0218555   0.0167699   -1.30    0.1926  -0.0547402   0.0110293
+asvabWK       0.00186736  0.0156995    0.12    0.9053  -0.0289186   0.0326533
+──────────────────────────────────────────────────────────────────────────────
+R² = 0.1793
+Answer Q3: Yes, including them directly is problematic. Because the six scores are
+highly correlated (Q2), the regression suffers from multicollinearity: the individual
+ASVAB coefficients are imprecise, some are insignificant and one even has the
+'wrong' (negative) sign (asvabPC), so they cannot be interpreted separately.
+Adding them also shrinks the black and education coefficients relative to Q1,
+since ability was an omitted variable correlated with those regressors.
+
+================================================================================
+Question 4: PCA Regression
+================================================================================
+Correlation between grad4yr and asvabPCA:
+[1.0 -0.4869390794642676; -0.4869390794642676 1.0]
+──────────────────────────────────────────────────────────────────────────────
+                   Coef.  Std. Error      t  Pr(>|t|)   Lower 95%    Upper 95%
+──────────────────────────────────────────────────────────────────────────────
+(Intercept)   2.12407      0.0497692  42.68    <1e-99   2.02648     2.22167
+black        -0.0938745    0.0253752  -3.70    0.0002  -0.143634   -0.0441152
+hispanic     -0.00192195   0.0261128  -0.07    0.9413  -0.0531275   0.0492836
+female       -0.160337     0.0195051  -8.22    <1e-15  -0.198586   -0.122089
+schoolt      -0.00195988   0.0049436  -0.40    0.6918  -0.011654    0.00773423
+gradHS        0.107811     0.0497352   2.17    0.0303   0.0102834   0.205339
+grad4yr       0.242383     0.0280565   8.64    <1e-16   0.187366    0.2974
+asvabPCA     -0.0525399    0.0060708  -8.65    <1e-17  -0.0644444  -0.0406354
+──────────────────────────────────────────────────────────────────────────────
+Answer Q4: The first principal component summarizes the six ASVAB scores in one
+regressor. Its coefficient is negative (about -0.05), but the sign of a PC is
+arbitrary: here the PC is negatively correlated with grad4yr (about -0.49), so it is
+oriented so that higher values mean LOWER test scores. Flipping the sign, higher
+ability raises wages, which matches Q3. The black and grad4yr coefficients shrink
+relative to Q1 (about -0.17 to -0.09 and 0.30 to 0.24), as in Q3, but now ability
+is controlled for with a single, precisely estimated regressor.
+
+================================================================================
+Question 5: Factor Analysis Regression
+================================================================================
+Correlation between grad4yr and asvabFactor:
+[1.0 0.489355468005658; 0.489355468005658 1.0]
+────────────────────────────────────────────────────────────────────────────────
+                    Coef.  Std. Error      t  Pr(>|t|)    Lower 95%    Upper 95%
+────────────────────────────────────────────────────────────────────────────────
+(Intercept)   2.12432      0.0495662   42.86    <1e-99   2.02712      2.22152
+black        -0.0857891    0.0255315   -3.36    0.0008  -0.135855    -0.0357233
+hispanic      0.000561945  0.0260851    0.02    0.9828  -0.0505895    0.0517134
+female       -0.155926     0.0194699   -8.01    <1e-14  -0.194106    -0.117747
+schoolt      -0.00247129   0.00494095  -0.50    0.6170  -0.0121602    0.00721761
+gradHS        0.106746     0.0496102    2.15    0.0315   0.00946364   0.204029
+grad4yr       0.239263     0.0280381    8.53    <1e-16   0.184282     0.294244
+asvabFactor   0.114716     0.0127014    9.03    <1e-18   0.0898091    0.139623
+────────────────────────────────────────────────────────────────────────────────
+Answer Q5: The results are very close to the PCA regression. The factor is positively
+correlated with grad4yr (about 0.49), so its coefficient is positive (about 0.11):
+higher ability means higher wages. The other coefficients are almost the same as
+in Q4. The factor is on a different scale than the PC, so the size of its
+coefficient is not directly comparable.
+
+================================================================================
+Question 6: Full Factor Model (MLE)
+================================================================================
+
+Estimating full factor model (Newton, Gauss-Legendre quadrature, R = 25)...
+Iter     Function value   Gradient norm 
+     0     2.030993e+04     6.186835e+03
+ * time: 0.0
+     1     1.932668e+04     4.828280e+03
+ * time: 27.073000192642212
+     2     1.789677e+04     1.588388e+03
+ * time: 53.623000144958496
+     3     1.756582e+04     3.940206e+02
+ * time: 80.27999997138977
+     4     1.752605e+04     4.859336e+01
+ * time: 107.12800002098083
+     5     1.752472e+04     1.527165e+00
+ * time: 133.39199995994568
+     6     1.752472e+04     3.233621e-03
+ * time: 167.34500002861023
+     7     1.752472e+04     1.722847e-08
+ * time: 196.5440001487732
+46×4 DataFrame
+ Row │ equation  variable                coefficient  std_error
+     │ String    String                  Float64      Float64
+─────┼──────────────────────────────────────────────────────────
+   1 │ asvabAR   black                       -0.9343     0.045
+   2 │ asvabAR   hispanic                    -0.672      0.0486
+   3 │ asvabAR   female                      -0.0245     0.0371
+   4 │ asvabAR   constant                     0.3692     0.0303
+   5 │ asvabCS   black                       -0.4309     0.0477
+   6 │ asvabCS   hispanic                    -0.4382     0.0509
+   7 │ asvabCS   female                       0.3939     0.039
+   8 │ asvabCS   constant                     0.0018     0.0316
+   9 │ asvabMK   black                       -0.8083     0.0459
+  10 │ asvabMK   hispanic                    -0.6298     0.0496
+  11 │ asvabMK   female                       0.1869     0.0379
+  12 │ asvabMK   constant                     0.2307     0.031
+  13 │ asvabNO   black                       -0.3418     0.0483
+  14 │ asvabNO   hispanic                    -0.4622     0.0517
+  15 │ asvabNO   female                       0.2467     0.0396
+  16 │ asvabNO   constant                     0.057      0.0322
+  17 │ asvabPC   black                       -0.7594     0.046
+  18 │ asvabPC   hispanic                    -0.5897     0.0495
+  19 │ asvabPC   female                       0.2914     0.0378
+  20 │ asvabPC   constant                     0.1611     0.0309
+  21 │ asvabWK   black                       -0.9353     0.0448
+  22 │ asvabWK   hispanic                    -0.7445     0.0481
+  23 │ asvabWK   female                       0.043      0.0368
+  24 │ asvabWK   constant                     0.3491     0.03
+  25 │ logwage   black                       -0.187      0.0244
+  26 │ logwage   hispanic                    -0.0797     0.026
+  27 │ logwage   female                      -0.1361     0.02
+  28 │ logwage   schoolt                     -0.0025     0.0049
+  29 │ logwage   gradHS                       0.1066     0.0495
+  30 │ logwage   grad4yr                      0.2389     0.028
+  31 │ logwage   constant                     2.1552     0.0506
+  32 │ asvabAR   factor loading (gamma)       0.7699     0.0152
+  33 │ asvabCS   factor loading (gamma)       0.5502     0.0185
+  34 │ asvabMK   factor loading (gamma)       0.8154     0.0152
+  35 │ asvabNO   factor loading (gamma)       0.6425     0.0181
+  36 │ asvabPC   factor loading (gamma)       0.7396     0.0162
+  37 │ asvabWK   factor loading (gamma)       0.6617     0.0163
+  38 │ logwage   factor loading (delta)       0.1049     0.0116
+  39 │ asvabAR   sigma                        0.4804     0.0092
+  40 │ asvabCS   sigma                        0.7835     0.0118
+  41 │ asvabMK   sigma                        0.437      0.0099
+  42 │ asvabNO   sigma                        0.7289     0.0114
+  43 │ asvabPC   sigma                        0.5575     0.01
+  44 │ asvabWK   sigma                        0.6119     0.0102
+  45 │ logwage   sigma                        0.4679     0.0067
+  46 │ (model)   log-likelihood          -17524.7      NaN
+
+Factor-model results also saved to PS8_Shashi_factor_results.csv
+Answer Q6: Ability (ξ) is treated as a latent factor that drives both the ASVAB
+scores (loadings γ_j, all positive, about 0.55 to 0.82) and log wages (δ about 0.10).
+So a one standard deviation increase in ability raises wages by about 10%, holding
+schooling fixed. Unlike Q3-Q5, the model does not plug in a noisy estimated proxy for
+ability, so measurement error in the test scores does not bias the wage equation.
+The grad4yr (about 0.24) and gradHS (about 0.11) coefficients are close to Q4-Q5.
+The black coefficient (about -0.19) is close to Q1, not Q4-Q5 (about -0.09), because
+the model assumes ξ is independent of race: the racial gap in test scores goes into
+the α's, not into ability. Note the sign of (γ, δ) is only identified jointly:
+flipping all of them gives the same likelihood.
+
+================================================================================
+Analysis complete!
+================================================================================
